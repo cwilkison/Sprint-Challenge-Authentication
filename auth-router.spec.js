@@ -27,9 +27,29 @@ const db = require("./database/dbConfig.js");
                 expect(response.status).toBe(500);
             });
         });
+
+        it("returns JSON", () => {
+            return supertest(server)
+            .post('/api/auth/register')
+            .send({ username: 'meow', password: 'meow'})
+            .then(response => {
+                expect(response.type).toMatch(/json/i);
+            })
+        } )
+
     })
 
     describe('/login POST', () => {
+
+
+        it("returns JSON", () => {
+            return supertest(server)
+            .post('/api/auth/login')
+            .send({ username: 'meow', password: 'meow'})
+            .then(response => {
+                expect(response.type).toMatch(/json/i);
+            })
+        } )
         
         it('login valid, returns 200', () => {
             return supertest(server)
@@ -48,5 +68,24 @@ const db = require("./database/dbConfig.js");
                 expect(response.status).toBe(400)
             })
         })
-    });
 
+    })
+
+    describe("server", () => {
+        
+        it("/ GET", () => {
+            return supertest(server)
+            .get("/")
+            .then(response => {
+                expect(response.status).toBe(200);
+            })
+        })
+
+        it("returns JSON", () => {
+            return supertest(server)
+            .get('/')
+            .then(response => {
+                expect(response.type).toMatch(/json/i);
+            })
+        } )
+    })
